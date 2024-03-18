@@ -1,17 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Text Box Example</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDB Resolution Finder</title>
 </head>
 <body>
+  <h1>PDB Resolution Finder</h1>
+  <form id="pdbForm">
+    <label for="pdbId">Enter PDB ID:</label>
+    <input type="text" id="pdbId" name="pdbId" required>
+    <button type="submit">Submit</button>
+  </form>
 
-<form action="/submit" method="post">
-  <label for="textbox">Enter your text:</label><br>
-  <input type="text" id="textbox" name="textbox"><br><br>
-  <input type="submit" value="Submit">
-</form>
+  <div id="resolutionResult"></div>
 
+  <script>
+    // JavaScript code for handling form submission
+    document.getElementById("pdbForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get the PDB ID from the input field
+      var pdbId = document.getElementById("pdbId").value;
+
+      // Call a function to fetch resolution using the PDB ID
+      fetchResolution(pdbId);
+    });
+
+    // Function to fetch resolution using PDB ID
+    function fetchResolution(pdbId) {
+      // Make an AJAX request to fetch resolution
+      // You can replace this with your own backend API endpoint
+      fetch(`https://www.rcsb.org/pdb/rest/describePDB?structureId=${pdbId}`)
+        .then(response => response.text())
+        .then(data => {
+          // Parse the XML response to get the resolution
+          var parser = new DOMParser();
+          var xmlDoc = parser.parseFromString(data, "text/xml");
+          var resolution = xmlDoc.getElementsByTagName("resolution")[0].innerHTML;
+
+          // Display the resolution result
+          document.getElementById("resolutionResult").innerHTML = `Resolution for PDB ID ${pdbId}: ${resolution} Å`;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("resolutionResult").innerHTML = "Error fetching resolution. Please try again later.";
+        });
+    }
+  </script>
 </body>
 </html>
