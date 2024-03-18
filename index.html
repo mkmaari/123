@@ -1,136 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Change</title>
-    <style>
-        body {
-            font-family: 'Bodoni MT', sans-serif;
-            font-size: 20px;
-            margin: 0;
-            padding: 0;
-            background-color: #accdfc;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Aligning items in the center horizontally */
-        }
-
-        header {
-            background-color: #accdfc;
-            color: #000000;
-            padding: 10px;
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h2 {
-            font-size: 20px; /* Adjust the font size as needed */
-        }
-
-        nav {
-            background-color: #accdfc;
-            font-size: 25px;
-            color: #000000;
-            padding: 10px;
-            text-align: center;
-        }
-
-        section {
-            padding: 20px;
-            text-box-width: 25px; /* Corrected typo */
-            display: flex;
-            flex-direction: row;
-        }
-
-        .left-column {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .content {
-            flex: 3;
-            padding: 20px;
-        }
-
-        footer {
-            background-color: #accdfc;
-            font-family: 'Bodoni MT', sans-serif;
-            font-size: 25px;
-            color: #000000;
-            padding: 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contact-details {
-            margin-top: 10px;
-        }
-
-        .logo {
-            max-width: 80%; /* Ensure the logo doesn't exceed its original size */
-            height: auto; /* Maintain aspect ratio */
-        }
-
-        /* Media queries for different resolutions */
-        @media only screen and (min-width: 100px) and (max-width: 600px) {
-            .logo {
-                width: 70px; /* Adjust width for smaller screens */
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Box Example</title>
 </head>
-
 <body>
-    <header>
-        <div>
-            <img class="logo" src="https://github.com/mkmaari/123/raw/main/unom_logo.png" width="150" height="100"
-                alt="Left Logo">
-        </div>
-        <div>
-            <center>
-                <h1>ResCrys</h1>
-            </center>
-            <h2>A server for prerequisite to perform Structural Biology</h2>
-        </div>
-        <div>
-            <img class="logo" src="https://github.com/mkmaari/123/raw/main/gnr2.png" width="200" height="150"
-                alt="Right Logo">
-        </div>
-    </header>
-    <nav>
-        <paragraph>
-            <p>Total Number Of Structures Available In The PDB</p>
-            <p><a href="https://github.com/mkmaari/123/blob/main/github.html">Click here</a></p>
-        </paragraph>
-    </nav>
-    <section>
-        <form id="pdb_form" method="post" action="/" style="text-align: center;">
-            <label for="pdb_id">Enter PDB ID:</label>
-            <input type="text" id="pdb_id" name="pdb_id" required>
-            <button type="submit">Submit</button>
-        </form>
-    	
 
-    </section>
-    <footer>
-        <div class="contact-details">
-            <p>Developed, Maintained & Hosted By</p>
-            <p>Biopolymer Lab</p>
-            <p>Department of Crystallography & Biophysics</p>
-            <p>University of Madras</p>
-            <p>Chennai - 600025</p>
-            <p>Email: <a href="mailto:drgugank@gmail.com" target="_blank" rel="noreferrer">drgugank@gmail.com</a></p>
-        </div>
-        <img class="logo" src="https://github.com/mkmaari/123/raw/main/exam.png" width="150" height="100"
-            alt="Bottom Logo">
-    </footer>
+<form action="/submit" method="post">
+  <label for="textbox">Enter your text:</label><br>
+  <input type="text" id="textbox" name="textbox"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
 </body>
-
 </html>
