@@ -1,52 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDB Resolution Finder</title>
-</head>
-<body>
-  <h1>PDB Resolution Finder</h1>
-  <form id="pdbForm">
-    <label for="pdbId">Enter PDB ID:</label>
-    <input type="text" id="pdbId" name="pdbId" required>
-    <button type="submit">Submit</button>
-  </form>
+import org.biojava.nbio.structure.Structure;
+import org.biojava.nbio.structure.StructureIO;
+import org.biojava.nbio.structure.io.FileParsingParameters;
 
-  <div id="resolutionResult"></div>
+import java.io.File;
+import java.io.IOException;
 
-  <script>
-    // JavaScript code for handling form submission
-    document.getElementById("pdbForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent default form submission
+public class PDBFetcher {
 
-      // Get the PDB ID from the input field
-      var pdbId = document.getElementById("pdbId").value;
+    public static void fetchResolution(String pdbId, String saveDirectory) throws IOException {
+        // Retrieve the mmCIF file
+        FileParsingParameters params = new FileParsingParameters();
+        params.setLoadChemCompInfo(true);
+        params.setAtomCaThreshold(Integer.MAX_VALUE); // This sets the limit for the number of atoms to read in a Structure object.
+        StructureIO.setAtomCachePath(saveDirectory);
+        Structure structure = StructureIO.getStructure(pdbId, params);
 
-      // Call a function to fetch resolution using the PDB ID
-      fetchResolution(pdbId);
-    });
+        // Get the resolution from the structure
+        double resolution = structure.getHeader().getResolution();
 
-    // Function to fetch resolution using PDB ID
-    function fetchResolution(pdbId) {
-      // Make an AJAX request to fetch resolution
-      // You can replace this with your own backend API endpoint
-      fetch(`https://www.rcsb.org/pdb/rest/describePDB?structureId=${pdbId}`)
-        .then(response => response.text())
-        .then(data => {
-          // Parse the XML response to get the resolution
-          var parser = new DOMParser();
-          var xmlDoc = parser.parseFromString(data, "text/xml");
-          var resolution = xmlDoc.getElementsByTagName("resolution")[0].innerHTML;
+        // Get the structure method
+        String structureMethod = structure.getHeader().getStructureMethod();
 
-          // Display the resolution result
-          document.getElementById("resolutionResult").innerHTML = `Resolution for PDB ID ${pdbId}: ${resolution} Å`;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          document.getElementById("resolutionResult").innerHTML = "Error fetching resolution. Please try again later.";
-        });
+        // Get crystallization details
+        String crystallizationDetails = structure.getHeader().getCrystallization();
+
+        // Get the name of the PDB entry
+        String pdbName = structure.getHeader().getName();
+
+        if (resolution != -1) {
+            System.out.println("The Resolution of PDB ID " + pdbId + " (" + pdbName + ") is " + resolution + " Å.");
+            System.out.println("Structure method: " + structureMethod + ".");
+        } else {
+            System.out.println("Resolution data not available for PDB ID " + pdbId + ".");
+            System.out.println("Structure method: " + structureMethod + ".");
+        }
+
+        if (crystallizationDetails != null && !crystallizationDetails.isEmpty()) {
+            System.out.println("Crystallization details: " + crystallizationDetails);
+        } else {
+            System.out.println("Crystallization details not available.");
+        }
     }
-  </script>
-</body>
-</html>
+
+    public static void main(String[] args) {
+        String pdbId = "1abc"; // Example PDB ID
+        String saveDirectory = "."; // Directory to save the mmCIF file
+        try {
+            fetchResolution(pdbId, saveDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
